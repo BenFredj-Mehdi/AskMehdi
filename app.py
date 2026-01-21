@@ -5,6 +5,7 @@ import textwrap
 from pathlib import Path
 from typing import List, Optional
 
+from dotenv import load_dotenv
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,14 +20,20 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from pypdf import PdfReader
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Paths
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATE_FILE = BASE_DIR / "index.html"
 MODEL_DIR = BASE_DIR / "AI ChatBot"
 
-# Configuration (from your notebook)
-GROQ_API_KEY = "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"
+# Configuration
+GROQ_API_KEY = os.getenv(
+    "GROQ_API_KEY",
+    default="your-api-key-here"  # Fallback if not in .env
+)
 CHAT_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
 EMBED_MODEL = "all-MiniLM-L6-v2"
 CHUNK_SIZE = 800
